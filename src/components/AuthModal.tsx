@@ -170,17 +170,30 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1F2937]/40 backdrop-blur-xs p-4">
-      <div className="relative w-full max-w-md bg-[#FFFDF9] rounded-3xl border border-[#E6E1D5] shadow-2xl p-6">
-        <button
-          onClick={onClose}
-          className="absolute top-5 end-5 p-1.5 rounded-full text-[#78716C] hover:text-[#1F2937] hover:bg-[#F5F2EB] transition-colors cursor-pointer"
-        >
-          <X className="w-5 h-5" />
-        </button>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1F2937]/50 backdrop-blur-xs p-3 sm:p-4 animate-in fade-in">
+      <div className="relative w-full max-w-md bg-[#FFFDF9] rounded-3xl border border-[#E6E1D5] shadow-2xl p-5 sm:p-6 max-h-[92vh] overflow-y-auto">
+        <div className="absolute top-5 end-5 flex items-center gap-2">
+          {/* Quick Logout Header Button */}
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-bold transition-all cursor-pointer shadow-2xs active:scale-95"
+            title={isAr ? 'تسجيل الخروج من الحساب' : 'Log Out from Account'}
+          >
+            <LogOut className="w-3.5 h-3.5" />
+            <span>{isAr ? 'خروج' : 'Log Out'}</span>
+          </button>
+
+          <button
+            onClick={onClose}
+            className="p-1.5 rounded-full text-[#78716C] hover:text-[#1F2937] hover:bg-[#F5F2EB] transition-colors cursor-pointer"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
 
         {/* Modal Title */}
-        <div className="mb-4">
+        <div className="mb-4 pe-24">
           <h2 className="text-xl font-black text-[#1F2937]">
             {tab === 'wallet'
               ? t('auth.loginWithWallet')
@@ -387,15 +400,15 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         )}
 
         {/* Bottom Footer Divider & Logout Button (Always Visible across all tabs) */}
-        <div className="mt-4 pt-3 border-t border-[#E6E1D5]">
+        <div className="mt-5 pt-4 border-t-2 border-[#E6E1D5]">
           <button
             type="button"
             onClick={handleLogout}
-            className="w-full py-2.5 px-4 bg-red-500/10 hover:bg-red-500/20 text-red-600 hover:text-red-700 border border-red-500/20 hover:border-red-500/30 rounded-xl font-bold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-xs active:scale-[0.99]"
+            className="w-full py-3 px-4 bg-red-600 hover:bg-red-700 text-white rounded-2xl font-black text-sm transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md hover:shadow-lg active:scale-[0.98]"
             title={isAr ? 'تسجيل الخروج من الحساب وإعادة ضبط الجلسة' : 'Log out from account and reset session'}
           >
-            <LogOut className="w-4 h-4" />
-            <span>{isAr ? 'تسجيل الخروج' : 'Log Out'}</span>
+            <LogOut className="w-4 h-4 stroke-[2.5]" />
+            <span>{isAr ? 'تسجيل الخروج من الحساب (Log Out)' : 'Log Out from Account (تسجيل الخروج)'}</span>
           </button>
         </div>
       </div>
