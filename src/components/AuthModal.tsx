@@ -349,30 +349,29 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               </>
             )}
 
-            {/* أزرار الإجراءات في الأسفل (حفظ + تسجيل خروج) */}
-            <div className="flex items-center gap-2 mt-3">
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="flex-1 py-2.5 bg-gradient-to-r from-[#F59E0B] to-[#D97706] hover:from-[#D97706] hover:to-[#B45309] text-white font-bold text-xs rounded-xl shadow-xs transition-colors cursor-pointer"
-              >
-                {isSubmitting
-                  ? isAr ? 'جاري المعالجة...' : 'Processing...'
-                  : tab === 'register' ? t('auth.register') : t('auth.login')}
-              </button>
-
-              <button
-                type="button"
-                onClick={handleLogout}
-                title={isAr ? 'تسجيل الخروج' : 'Log Out'}
-                className="px-3 py-2.5 bg-[#EF4444]/10 hover:bg-[#EF4444] text-[#EF4444] hover:text-white font-bold text-xs rounded-xl transition-colors cursor-pointer flex items-center justify-center gap-1 border border-[#EF4444]/30"
-              >
-                <LogOut className="w-4 h-4" />
-                <span className="hidden sm:inline">{isAr ? 'خروج' : 'Logout'}</span>
-              </button>
-            </div>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full py-2.5 mt-2 bg-gradient-to-r from-[#F59E0B] to-[#D97706] hover:from-[#D97706] hover:to-[#B45309] text-white font-bold text-xs rounded-xl shadow-xs transition-colors cursor-pointer"
+            >
+              {isSubmitting
+                ? isAr ? 'جاري المعالجة...' : 'Processing...'
+                : tab === 'register' ? t('auth.register') : t('auth.login')}
+            </button>
           </form>
         )}
+
+        {/* زر تسجيل الخروج الثابت في أسفل النافذة دائماً */}
+        <div className="mt-3 pt-3 border-t border-[#E6E1D5]">
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="w-full py-2 bg-[#EF4444]/10 hover:bg-[#EF4444] text-[#EF4444] hover:text-white font-bold text-xs rounded-xl transition-colors cursor-pointer flex items-center justify-center gap-1.5 border border-[#EF4444]/30"
+          >
+            <LogOut className="w-4 h-4" />
+            <span>{isAr ? 'تسجيل الخروج من الحساب' : 'Log Out'}</span>
+          </button>
+        </div>
       </div>
     </div>
   );
