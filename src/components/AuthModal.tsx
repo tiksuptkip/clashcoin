@@ -48,7 +48,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       setErrorMsg(isAr ? 'كلمة المرور يجب أن تتكون من 6 أحرف على الأقل' : 'Password must be at least 6 characters');
       return;
     }
-    
     setErrorMsg('');
     setIsSubmitting(true);
 
@@ -85,9 +84,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         });
 
         if (authError) {
+          // If email verification is needed or user exists, notify gently
           console.warn('Supabase register note:', authError);
         }
       } else {
+        // Sign in
         const { user: authUser, error: authError } = await supabaseSync.signInWithEmail(
           email,
           password
@@ -114,6 +115,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       setIsSubmitting(false);
       onClose();
     } catch {
+      // Local fallback
       let newBalance = user.balance;
       if (tab === 'register' && referralCode.trim()) {
         newBalance += 50.0;
@@ -136,6 +138,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       return;
     }
 
+    // Simulate EIP-712 / personal_sign
     setSignedSuccess(true);
     setTimeout(() => {
       onUpdateUser({
@@ -146,9 +149,23 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     }, 1000);
   };
 
-  // دالة تسجيل الخروج الفوري
-  const handleLogout = () => {
-    localStorage.removeItem('clash_of_coin_user');
+  const handleLogout = async () => {
+    try {
+      await supabaseSync.signOut();
+    } catch {
+      // Ignore
+    }
+    try {
+      localStorage.removeItem('clash_of_coin_user');
+      localStorage.removeItem('coc_user');
+      localStorage.removeItem('coc_wallet');
+      localStorage.removeItem('coc_bets');
+      localStorage.removeItem('coc_deposits');
+      localStorage.removeItem('coc_withdrawals');
+      localStorage.removeItem('coc_sports_bets');
+    } catch {
+      // Ignore
+    }
     window.location.reload();
   };
 
@@ -162,6 +179,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           <X className="w-5 h-5" />
         </button>
 
+        {/* Modal Title */}
         <div className="mb-4">
           <h2 className="text-xl font-black text-[#1F2937]">
             {tab === 'wallet'
@@ -175,6 +193,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           </p>
         </div>
 
+        {/* Tabs */}
         <div className="grid grid-cols-3 gap-1 p-1 bg-[#F5F2EB] rounded-xl text-xs font-bold mb-4">
           <button
             onClick={() => setTab('login')}
@@ -208,6 +227,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           </div>
         )}
 
+        {/* Tab Content */}
         {tab === 'wallet' ? (
           <div className="space-y-4 py-2">
             <div className="p-3 bg-[#F5F2EB] rounded-2xl border border-[#E6E1D5] text-xs space-y-2">
@@ -328,6 +348,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     <option value="EG">🇪🇬 مصر (Egypt) · الجنيه المصري (EGP)</option>
                     <option value="OTHER">🌐 أخرى / دولي (International) · الدولار (USD)</option>
                   </select>
+                  <p className="text-[10px] text-[#A8A29E] mt-1 leading-tight">
+                    {country === 'EG'
+                      ? (isAr ? 'يتم تحويل النظام المالي بالكامل للجنيه المصري ومحافظ فودافون كاش وإنستاباي.' : 'Local Egyptian wallets and EGP currency enabled.')
+                      : (isAr ? 'النظام المالي بالدولار الأمريكي USDT.' : 'International USD/USDT system.')}
+                  </p>
                 </div>
 
                 <div>
@@ -361,15 +386,16 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           </form>
         )}
 
-        {/* زر تسجيل الخروج الثابت في أسفل النافذة دائماً */}
-        <div className="mt-3 pt-3 border-t border-[#E6E1D5]">
+        {/* Bottom Footer Divider & Logout Button (Always Visible across all tabs) */}
+        <div className="mt-4 pt-3 border-t border-[#E6E1D5]">
           <button
             type="button"
             onClick={handleLogout}
-            className="w-full py-2 bg-[#EF4444]/10 hover:bg-[#EF4444] text-[#EF4444] hover:text-white font-bold text-xs rounded-xl transition-colors cursor-pointer flex items-center justify-center gap-1.5 border border-[#EF4444]/30"
+            className="w-full py-2.5 px-4 bg-red-500/10 hover:bg-red-500/20 text-red-600 hover:text-red-700 border border-red-500/20 hover:border-red-500/30 rounded-xl font-bold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-xs active:scale-[0.99]"
+            title={isAr ? 'تسجيل الخروج من الحساب وإعادة ضبط الجلسة' : 'Log out from account and reset session'}
           >
             <LogOut className="w-4 h-4" />
-            <span>{isAr ? 'تسجيل الخروج من الحساب' : 'Log Out'}</span>
+            <span>{isAr ? 'تسجيل الخروج' : 'Log Out'}</span>
           </button>
         </div>
       </div>
