@@ -13,6 +13,7 @@ import {
   Shield,
   Wallet,
   Coins,
+  LogOut,
 } from 'lucide-react';
 import { UserProfile } from '../types';
 import { supabaseSync } from '../services/supabase';
@@ -149,16 +150,48 @@ ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS display_name TEXT;`;
     onClose();
   };
 
+  const handleLogout = async () => {
+    try {
+      await supabaseSync.signOut();
+    } catch {
+      // Ignore
+    }
+    try {
+      localStorage.removeItem('clash_of_coin_user');
+      localStorage.removeItem('coc_user');
+      localStorage.removeItem('coc_wallet');
+      localStorage.removeItem('coc_bets');
+      localStorage.removeItem('coc_deposits');
+      localStorage.removeItem('coc_withdrawals');
+      localStorage.removeItem('coc_sports_bets');
+    } catch {
+      // Ignore
+    }
+    window.location.reload();
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-3 animate-in fade-in">
       <div className="relative w-full max-w-lg bg-[#FFFDF9] rounded-3xl border border-[#E6E1D5] shadow-2xl p-6 max-h-[92vh] overflow-y-auto">
-        {/* Close Button */}
-        <button
-          onClick={onClose}
-          className="absolute top-5 end-5 p-1.5 rounded-full text-[#78716C] hover:text-[#1F2937] hover:bg-[#F5F2EB] transition-colors cursor-pointer"
-        >
-          <X className="w-5 h-5" />
-        </button>
+        {/* Header Controls: Quick Logout & Close */}
+        <div className="absolute top-5 end-5 flex items-center gap-2">
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-bold transition-all cursor-pointer shadow-2xs active:scale-95"
+            title={isAr ? 'تسجيل الخروج من الحساب' : 'Log Out from Account'}
+          >
+            <LogOut className="w-3.5 h-3.5" />
+            <span>{isAr ? 'خروج' : 'Log Out'}</span>
+          </button>
+
+          <button
+            onClick={onClose}
+            className="p-1.5 rounded-full text-[#78716C] hover:text-[#1F2937] hover:bg-[#F5F2EB] transition-colors cursor-pointer"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
 
         {/* Modal Header */}
         <div className="mb-5 border-b border-[#F3EFE6] pb-3">
@@ -390,6 +423,19 @@ ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS display_name TEXT;`;
               className="px-4 py-3 bg-[#F5F2EB] hover:bg-[#E6E1D5] text-[#1F2937] font-bold text-xs rounded-xl transition-colors cursor-pointer"
             >
               {isAr ? 'إلغاء' : 'Cancel'}
+            </button>
+          </div>
+
+          {/* Full Logout Button in Profile Modal */}
+          <div className="pt-3 border-t border-[#E6E1D5]">
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="w-full py-3 px-4 bg-red-600 hover:bg-red-700 text-white rounded-2xl font-black text-sm transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md hover:shadow-lg active:scale-[0.98]"
+              title={isAr ? 'تسجيل الخروج من الحساب' : 'Log out from account'}
+            >
+              <LogOut className="w-4 h-4 stroke-[2.5]" />
+              <span>{isAr ? 'تسجيل الخروج من الحساب (Log Out)' : 'Log Out from Account (تسجيل الخروج)'}</span>
             </button>
           </div>
         </form>
