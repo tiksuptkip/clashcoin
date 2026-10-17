@@ -48,18 +48,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       setErrorMsg(isAr ? 'كلمة المرور يجب أن تتكون من 6 أحرف على الأقل' : 'Password must be at least 6 characters');
       return;
     }
-    {/* زر تسجيل الخروج */}
-<button
-  type="button"
-  onClick={() => {
-    // مسح بيانات الجلسة/المحفظة وتسجيل الخروج
-    localStorage.removeItem('clash_of_coin_user');
-    window.location.reload(); // إعادة تحميل الصفحة لتطبيق الخروج
-  }}
-  className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl transition duration-200 shadow-md"
->
-  تسجيل الخروج
-</button>
+    
     setErrorMsg('');
     setIsSubmitting(true);
 
