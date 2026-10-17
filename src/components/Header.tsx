@@ -18,6 +18,7 @@ import {
   VolumeX,
 } from 'lucide-react';
 import { soundManager } from '../services/sound';
+import { supabaseSync } from '../services/supabase';
 
 interface HeaderProps {
   walletState: ConnectedWalletState;
@@ -60,6 +61,26 @@ export const Header: React.FC<HeaderProps> = ({
       document.documentElement.lang = nextLang;
       localStorage.setItem('coc_language', nextLang);
     }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await supabaseSync.signOut();
+    } catch {
+      // Ignore
+    }
+    try {
+      localStorage.removeItem('clash_of_coin_user');
+      localStorage.removeItem('coc_user');
+      localStorage.removeItem('coc_wallet');
+      localStorage.removeItem('coc_bets');
+      localStorage.removeItem('coc_deposits');
+      localStorage.removeItem('coc_withdrawals');
+      localStorage.removeItem('coc_sports_bets');
+    } catch {
+      // Ignore
+    }
+    window.location.reload();
   };
 
   const truncatedAddress = walletState.address
@@ -114,6 +135,16 @@ export const Header: React.FC<HeaderProps> = ({
                   : `$${user.balance.toFixed(0)}`}
               </span>
             </div>
+          </button>
+
+          {/* Quick Logout Button in Header */}
+          <button
+            onClick={handleLogout}
+            className="flex items-center justify-center h-10 w-10 rounded-xl border border-red-200 bg-red-50 hover:bg-red-100 text-red-600 transition-colors cursor-pointer shrink-0"
+            title={i18n.language === 'ar' ? 'تسجيل الخروج من الحساب' : 'Log Out'}
+            aria-label="Log Out"
+          >
+            <LogOut className="w-4 h-4 stroke-[2.2]" />
           </button>
 
           {/* Connect Wallet Button */}
