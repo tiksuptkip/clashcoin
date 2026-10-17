@@ -1,0 +1,8 @@
+{
+  "name": "Remix Remix Remix Remix Clash Of Coin - Real-Time Crypto Prediction Battle",
+  "description": "The premier real-time crypto prediction battle arena. Predict UP or DOWN on BTC, ETH, SOL, BNB, XRP with live Binance price charts, provably fair pools, and instant Web3 wallet payouts at ClashOfCoin.bet.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
