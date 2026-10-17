@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { X, Mail, Lock, Gift, Key, CheckCircle, ShieldCheck, User, Sparkles } from 'lucide-react';
+import { X, Mail, Lock, Gift, Key, CheckCircle, ShieldCheck, User, Sparkles, LogOut } from 'lucide-react';
 import { UserProfile } from '../types';
 import { supabaseSync } from '../services/supabase';
 
@@ -85,11 +85,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         });
 
         if (authError) {
-          // If email verification is needed or user exists, notify gently
           console.warn('Supabase register note:', authError);
         }
       } else {
-        // Sign in
         const { user: authUser, error: authError } = await supabaseSync.signInWithEmail(
           email,
           password
@@ -116,7 +114,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       setIsSubmitting(false);
       onClose();
     } catch {
-      // Local fallback
       let newBalance = user.balance;
       if (tab === 'register' && referralCode.trim()) {
         newBalance += 50.0;
@@ -139,7 +136,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       return;
     }
 
-    // Simulate EIP-712 / personal_sign
     setSignedSuccess(true);
     setTimeout(() => {
       onUpdateUser({
@@ -148,6 +144,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       setSignedSuccess(false);
       onClose();
     }, 1000);
+  };
+
+  // دالة تسجيل الخروج الفوري
+  const handleLogout = () => {
+    localStorage.removeItem('clash_of_coin_user');
+    window.location.reload();
   };
 
   return (
@@ -160,7 +162,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           <X className="w-5 h-5" />
         </button>
 
-        {/* Modal Title */}
         <div className="mb-4">
           <h2 className="text-xl font-black text-[#1F2937]">
             {tab === 'wallet'
@@ -174,7 +175,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           </p>
         </div>
 
-        {/* Tabs */}
         <div className="grid grid-cols-3 gap-1 p-1 bg-[#F5F2EB] rounded-xl text-xs font-bold mb-4">
           <button
             onClick={() => setTab('login')}
@@ -208,7 +208,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           </div>
         )}
 
-        {/* Tab Content */}
         {tab === 'wallet' ? (
           <div className="space-y-4 py-2">
             <div className="p-3 bg-[#F5F2EB] rounded-2xl border border-[#E6E1D5] text-xs space-y-2">
@@ -329,11 +328,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     <option value="EG">🇪🇬 مصر (Egypt) · الجنيه المصري (EGP)</option>
                     <option value="OTHER">🌐 أخرى / دولي (International) · الدولار (USD)</option>
                   </select>
-                  <p className="text-[10px] text-[#A8A29E] mt-1 leading-tight">
-                    {country === 'EG'
-                      ? (isAr ? 'يتم تحويل النظام المالي بالكامل للجنيه المصري ومحافظ فودافون كاش وإنستاباي.' : 'Local Egyptian wallets and EGP currency enabled.')
-                      : (isAr ? 'النظام المالي بالدولار الأمريكي USDT.' : 'International USD/USDT system.')}
-                  </p>
                 </div>
 
                 <div>
@@ -355,15 +349,28 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               </>
             )}
 
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full py-2.5 mt-2 bg-gradient-to-r from-[#F59E0B] to-[#D97706] hover:from-[#D97706] hover:to-[#B45309] text-white font-bold text-xs rounded-xl shadow-xs transition-colors cursor-pointer"
-            >
-              {isSubmitting
-                ? isAr ? 'جاري المعالجة...' : 'Processing...'
-                : tab === 'register' ? t('auth.register') : t('auth.login')}
-            </button>
+            {/* أزرار الإجراءات في الأسفل (حفظ + تسجيل خروج) */}
+            <div className="flex items-center gap-2 mt-3">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="flex-1 py-2.5 bg-gradient-to-r from-[#F59E0B] to-[#D97706] hover:from-[#D97706] hover:to-[#B45309] text-white font-bold text-xs rounded-xl shadow-xs transition-colors cursor-pointer"
+              >
+                {isSubmitting
+                  ? isAr ? 'جاري المعالجة...' : 'Processing...'
+                  : tab === 'register' ? t('auth.register') : t('auth.login')}
+              </button>
+
+              <button
+                type="button"
+                onClick={handleLogout}
+                title={isAr ? 'تسجيل الخروج' : 'Log Out'}
+                className="px-3 py-2.5 bg-[#EF4444]/10 hover:bg-[#EF4444] text-[#EF4444] hover:text-white font-bold text-xs rounded-xl transition-colors cursor-pointer flex items-center justify-center gap-1 border border-[#EF4444]/30"
+              >
+                <LogOut className="w-4 h-4" />
+                <span className="hidden sm:inline">{isAr ? 'خروج' : 'Logout'}</span>
+              </button>
+            </div>
           </form>
         )}
       </div>
