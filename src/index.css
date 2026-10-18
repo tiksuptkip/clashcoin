@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-ar: 'Tajawal', sans-serif;
+    --font-en: 'Inter', sans-serif;
+  }
+
+  html[dir="rtl"] {
+    font-family: 'Tajawal', sans-serif;
+  }
+
+  html[dir="ltr"] {
+    font-family: 'Inter', sans-serif;
+  }
+
+  body {
+    background-color: #FFFBF0;
+    color: #1F2937;
+  }
+}
+
+/* Tabular numbers for all numbers and timers */
+.font-tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Custom scrollbar matching warm theme */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F5F2EB;
+}
+::-webkit-scrollbar-thumb {
+  background: #D9D2C5;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #B8B0A2;
+}
+
+/* Subtle glow animations for emerald and ruby */
+@keyframes emeraldPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+  50% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+}
+
+@keyframes rubyPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+  50% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+}
+
+.pulse-emerald {
+  animation: emeraldPulse 2s infinite;
+}
+
+.pulse-ruby {
+  animation: rubyPulse 2s infinite;
+}
