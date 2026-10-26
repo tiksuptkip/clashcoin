@@ -1,0 +1,6 @@
+{
+  "name": "Clash Of Coin & Trix Arena",
+  "description": "Real-time Crypto Prediction Battle and Premier Levant Trix Card Game Arena with standard 13-card hand fan display, partnership play, smart AI bot fill-in and live hot-swap.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

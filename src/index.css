@@ -1,0 +1,266 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-ar: 'Tajawal', sans-serif;
+    --font-en: 'Inter', sans-serif;
+  }
+
+  html[dir="rtl"] {
+    font-family: 'Cairo', 'Tajawal', 'Noto Sans Arabic', 'Segoe UI', system-ui, sans-serif;
+  }
+
+  html[dir="ltr"] {
+    font-family: 'Inter', 'Cairo', 'Tajawal', 'Noto Sans Arabic', 'Segoe UI', system-ui, sans-serif;
+  }
+
+  body {
+    background-color: #FFFBF0;
+    color: #1F2937;
+  }
+}
+
+/* Tabular numbers for all numbers and timers */
+.font-tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Custom scrollbar matching warm theme */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F5F2EB;
+}
+::-webkit-scrollbar-thumb {
+  background: #D9D2C5;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #B8B0A2;
+}
+
+/* Subtle glow animations for emerald and ruby */
+@keyframes emeraldPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+  50% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+}
+
+@keyframes rubyPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+  50% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+}
+
+.pulse-emerald {
+  animation: emeraldPulse 2s infinite;
+}
+
+.pulse-ruby {
+  animation: rubyPulse 2s infinite;
+}
+
+/* =========================================================================
+   TRIX CARD ROOM ENTRY & EXIT VIRTUAL TABLE ANIMATIONS
+   ========================================================================= */
+
+/* Table enter and exit */
+@keyframes trixTableEnter {
+  0% {
+    opacity: 0;
+    transform: scale(0.96) translateY(14px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes trixTableExit {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.96) translateY(14px);
+  }
+}
+
+/* Individual Player Seat Entry Animations (Slide in from their respective table edges) */
+@keyframes playerSeatEnterTop {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.85);
+  }
+  65% {
+    transform: translateY(4px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes playerSeatEnterBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.85);
+  }
+  65% {
+    transform: translateY(-4px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes playerSeatEnterLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-30px) scale(0.85);
+  }
+  65% {
+    transform: translateX(4px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes playerSeatEnterRight {
+  0% {
+    opacity: 0;
+    transform: translateX(30px) scale(0.85);
+  }
+  65% {
+    transform: translateX(-4px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+/* Player Seat Exit Animations (Smooth slide out to their table edges) */
+@keyframes playerSeatExitTop {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.85);
+  }
+}
+
+@keyframes playerSeatExitBottom {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.85);
+  }
+}
+
+@keyframes playerSeatExitLeft {
+  0% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-30px) scale(0.85);
+  }
+}
+
+@keyframes playerSeatExitRight {
+  0% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(30px) scale(0.85);
+  }
+}
+
+/* Seat Gold Glow Ripple when player sits */
+@keyframes seatJoinGlow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.75);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(212, 175, 55, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(212, 175, 55, 0);
+  }
+}
+
+/* Staggered card deal fan animation */
+@keyframes cardDealStagger {
+  0% {
+    opacity: 0;
+    transform: translateY(24px) scale(0.7) rotate(6deg);
+  }
+  70% {
+    transform: translateY(-4px) scale(1.03) rotate(-1deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+}
+
+.animate-trix-table-enter {
+  animation: trixTableEnter 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-trix-table-exit {
+  animation: trixTableExit 0.4s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+}
+
+.animate-player-enter-top {
+  animation: playerSeatEnterTop 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-player-enter-bottom {
+  animation: playerSeatEnterBottom 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-player-enter-left {
+  animation: playerSeatEnterLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-player-enter-right {
+  animation: playerSeatEnterRight 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-player-exit-top {
+  animation: playerSeatExitTop 0.35s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+}
+
+.animate-player-exit-bottom {
+  animation: playerSeatExitBottom 0.35s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+}
+
+.animate-player-exit-left {
+  animation: playerSeatExitLeft 0.35s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+}
+
+.animate-player-exit-right {
+  animation: playerSeatExitRight 0.35s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+}
+
+.animate-seat-glow {
+  animation: seatJoinGlow 1.2s ease-out 1;
+}
+
+.animate-card-deal {
+  animation: cardDealStagger 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
